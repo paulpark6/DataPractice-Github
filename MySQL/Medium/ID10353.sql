@@ -15,3 +15,25 @@ select t.worker_title from title t
 inner join worker w
 on w.worker_id = t.worker_ref_id
 where salary = (select max(salary) from worker)
+
+
+-- solution3:
+with all_table as (
+select * from worker w
+join title t
+on w.worker_id=t.worker_ref_id
+),
+same_salary as (
+select *, count(salary) as count_salary from all_table
+group by salary
+having  count_salary >= 2
+), 
+max_salary as (
+select max(salary) as max_sal from worker
+),
+result as (
+    select at.worker_title FROM all_table at JOIN max_salary ms ON at.salary = ms.max_sal
+    UNION 
+    SELECT worker_title FROM same_salary
+)
+select * from result
