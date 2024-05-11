@@ -38,3 +38,25 @@ WITH max_mar AS (
 SELECT ABS(
     (SELECT * FROM max_mar) - (SELECT * FROM max_eng)
 ) salary_difference
+
+-- SOLUTION 3:
+WITH total_comb AS ( 
+    SELECT e.salary,d.department 
+    FROM db_employee e
+    INNER JOIN db_dept d 
+    ON e.department_id = d.id
+),
+highest_marketing AS (
+    SELECT MAX(salary) AS max_marketing_sal 
+    FROM total_comb
+    WHERE department = 'marketing'
+),
+highest_engineering AS (
+    SELECT MAX(salary) AS max_engineering_sal 
+    FROM total_comb
+    WHERE department = 'engineering'
+)
+SELECT ABS(
+    (SELECT max_marketing_sal FROM highest_marketing) - 
+    (SELECT max_engineering_sal FROM highest_engineering)
+) AS salary_difference
