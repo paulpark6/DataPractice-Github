@@ -18,3 +18,14 @@ select company, country from forbes_global_2010_2014
 where sector = "Financials"
 order by profits desc
 limit 1
+
+-- Solution 4:
+with financials as (
+select company, profits, continent from forbes_global_2010_2014
+where sector= 'Financials'
+),
+mx as (
+select max(profits) as max_profit from financials
+)
+select company, continent from financials
+where profits = (select max_profit from mx)
