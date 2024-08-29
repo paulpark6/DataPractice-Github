@@ -16,4 +16,3 @@ def combine_two_tables2(person: pd.DataFrame, address: pd.DataFrame) -> pd.DataF
 s = "string"
 for i in range(0, len(s)):
     print(s[i])
-
